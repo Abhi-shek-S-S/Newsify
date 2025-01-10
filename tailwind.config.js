@@ -13,6 +13,11 @@ export default {
       },
       height:{
         customh1: "calc(100vh - 360px)",
+        customh2: "calc(100vh - 230px)",
+        customh3: "calc(100vh - 535px)",
+        customh4: "calc(100vh - 666px)",
+
+
       }
     },
   },

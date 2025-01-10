@@ -1,5 +1,5 @@
 
-const Loader = () => {
+const LoadingShimmer = () => {
     return (
         <div className="bg-gray-800 rounded-lg p-4 shadow-md animate-pulse">
             <div className="h-48 bg-gray-700 rounded mb-4"></div>
@@ -9,4 +9,4 @@ const Loader = () => {
     )
 }
 
-export default Loader
+export default LoadingShimmer
