@@ -5,8 +5,9 @@ export const fetchArticles = createAsyncThunk(
   'articles/fetchArticles',
   async (menuType, { getState }) => {
     const { page, pageSize } = getState().articlesForAllPages;
+    const apiKey = import.meta.env.VITE_APP_NEWSAPI_KEY;  // Fetch the API key from environment variables
     const response = await fetch(
-      `https://newsapi.org/v2/everything?q=${menuType}&pageSize=${pageSize}&page=${page}&apiKey=ea6ac5feaf1c4643ad682c0d95fc08c7`
+      `https://newsapi.org/v2/everything?q=${menuType}&pageSize=${pageSize}&page=${page}&apiKey=${apiKey}`
     );
     const data = await response.json();
     return data.articles;
