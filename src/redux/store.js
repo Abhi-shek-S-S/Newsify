@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import sourcesReducer from './sourcesSlice';
 import navBarReducer from './navbarSlice'; 
 import topHeadlinesReducer from './topHeadlinesSlice';
+import articlesReducer from './articleForAllPagesSlice';
 
 
 export const store = configureStore({
@@ -10,6 +11,6 @@ export const store = configureStore({
     sources: sourcesReducer,
     navBar: navBarReducer,
     topHeadlines: topHeadlinesReducer,
-
+    articlesForAllPages: articlesReducer,
   },
 });

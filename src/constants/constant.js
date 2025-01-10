@@ -20,3 +20,13 @@ export const MENU_ITEMS = [
     "Science",
 ];
 
+
+export const PREFERENCE_CATEGORY_ITEMS = [
+    "World",
+    "Local",
+    "Business",
+    "Technology",
+    "Entertainment",
+    "Sports",
+    "Science",
+];

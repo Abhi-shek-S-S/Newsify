@@ -3,10 +3,16 @@ import { Search, Sun, Moon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { MENU_ITEMS } from '../../constants/constant';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsPreferenceModalOpen } from '../../redux/navbarSlice';
+import { handleMenuClick, setIsPreferenceModalOpen } from '../../redux/navbarSlice';
+import Preference from '../PreferenceModal/Preference';
+import { useLocation, useNavigate } from 'react-router';
+import { useEffect } from 'react';
+import { fetchArticles } from '../../redux/articleForAllPagesSlice';
 
 function NavBar() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();  // Get the current location (route)
     const { search, isPreferenceModalOpen, isFilterModalOpen, active } = useSelector(state => state.navBar);
     // const darkMode = useSelector(state => state.theme.darkMode); // Assuming darkMode is stored in a `theme` slice
 
@@ -20,11 +26,25 @@ function NavBar() {
     //     dispatch(setDarkMode(!darkMode)); // Assuming you have a darkMode action in the theme slice
     // };
 
+
     // Handle menu item click
+    // src/components/NavBar.jsx
     const handleMenuItemClick = (item) => {
-        dispatch(handleMenuClick(item));
+        dispatch(handleMenuClick(item));  // Handle active menu state
+        dispatch(fetchArticles(item.toLowerCase())); // Fetch articles based on the clicked menu type
+
+        // Navigate to the appropriate page
+        if (item === "Home") {
+            navigate('/');  // Navigate to Home route
+        } else if (item === "For you") {
+            navigate('/mainpage');  // Navigate to For you page
+        } else {
+            // Navigate to the dynamic route based on the menu item
+            navigate(`/${item.toLowerCase().replace(' ', '')}`);
+        }
     };
 
+    
     // Handle modals
     const handleFilterModalOpen = () => {
         dispatch(setIsFilterModalOpen(true));
@@ -33,6 +53,13 @@ function NavBar() {
     const handlePreferenceModalOpen = () => {
         dispatch(setIsPreferenceModalOpen(true));
     };
+
+    // Update the active menu item based on the current path
+    useEffect(() => {
+        const path = location.pathname;
+        const activeItem = MENU_ITEMS.find(item => path.includes(item.toLowerCase())) || "Home";  // Default to "Home" if no match
+        dispatch(handleMenuClick(activeItem)); // Set the active item based on the path
+    }, [location, dispatch]);
 
     return (
         <div className='sticky top-0 mx-auto p-6 shadow-lg bg-gray-800 w-full'>
@@ -96,6 +123,10 @@ function NavBar() {
                     ))}
                 </ul>
             </div>
+
+            {
+                isPreferenceModalOpen && <Preference />
+            }
         </div>
     );
 }

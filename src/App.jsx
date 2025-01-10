@@ -29,18 +29,26 @@ function App() {
     <Router>
       <div className="App">
         {/* The NavBar will be visible on all routes */}
-        <NavBar 
+        <NavBar
           // onDarkModeChange={toggleDarkMode} 
           // darkMode={darkMode} 
-          search={search} 
-          onSearchChange={setSearch} 
+          search={search}
+          onSearchChange={setSearch}
         />
 
         <div className="main-content">
           {/* Routes for your pages */}
           <Routes>
             <Route path="/" element={<HomePage />} />
-            {/* <Route path="/" element={<MainPage onDarkModeChange={toggleDarkMode} darkMode={darkMode} search={search} onSearchChange={setSearch} />} /> */}
+            <Route path="/main-page" element={<MainPage />} />
+            <Route path="/india" element={<MainPage />} />
+            <Route path="/world" element={<MainPage />} />
+            <Route path="/local" element={<MainPage />} />
+            <Route path="/business" element={<MainPage />} />
+            <Route path="/technology" element={<MainPage />} />
+            <Route path="/entertainment" element={<MainPage />} />
+            <Route path="/sports" element={<MainPage />} />
+            <Route path="/science" element={<MainPage />} />
             {/* Add more routes here as needed */}
           </Routes>
         </div>
