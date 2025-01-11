@@ -3,7 +3,7 @@ import { Search, Sun, Moon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { MENU_ITEMS } from '../../constants/constant';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleMenuClick, setIsPreferenceModalOpen } from '../../redux/navbarSlice';
+import { clearSearchResults, handleMenuClick, searchArticles, setIsPreferenceModalOpen, setSearch } from '../../redux/navbarSlice';
 import Preference from '../PreferenceModal/Preference';
 import { useLocation, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
@@ -32,19 +32,24 @@ function NavBar() {
     // src/components/NavBar.jsx
     const handleMenuItemClick = (item) => {
         dispatch(handleMenuClick(item));  // Handle active menu state
-        dispatch(fetchArticles(item.toLowerCase())); // Fetch articles based on the clicked menu type
+
+        // Only fetch articles if the item is not "For You" or "New Showcase"
+        if (item !== "For you" && item !== "New Showcase") {
+            dispatch(fetchArticles(item.toLowerCase())); // Fetch articles based on the clicked menu type
+        }
 
         // Navigate to the appropriate page
         if (item === "Home") {
             navigate('/');  // Navigate to Home route
         } else if (item === "For you") {
-            navigate('/mainpage');  // Navigate to For you page
+            navigate('/for-you');  // Navigate to For you page
+        } else if (item === "New Showcase") {
+            navigate('/new-showcase');  // Navigate to New Showcase page
         } else {
             // Navigate to the dynamic route based on the menu item
             navigate(`/${item.toLowerCase().replace(' ', '')}`);
         }
     };
-
 
     // Handle modals
     const handleFilterModalOpen = () => {
@@ -55,12 +60,39 @@ function NavBar() {
         dispatch(setIsPreferenceModalOpen(true));
     };
 
+    const handleSearchChange = (value) => {
+        dispatch(setSearch(value));
+
+        if (!value.trim()) {
+            dispatch(clearSearchResults());
+            navigate('/');
+            return;
+        }
+    };
+
+    useEffect(() => {
+        const debounceTimer = setTimeout(() => {
+            if (search.trim()) {
+                dispatch(searchArticles(search));
+                navigate('/search');
+            }
+        }, 500);
+
+        return () => clearTimeout(debounceTimer);
+    }, [search, dispatch, navigate]);
+
     // Update the active menu item based on the current path
     useEffect(() => {
         const path = location.pathname;
-        const activeItem = MENU_ITEMS.find(item => path.includes(item.toLowerCase())) || "Home";  // Default to "Home" if no match
+        const activeItem = MENU_ITEMS.find(item => {
+            // Match exact path or the route fragment
+            if (path === '/' && item === 'Home') return true;
+            if (path === '/for-you' && item === 'For you') return true;
+            return path.includes(item.toLowerCase()); // Match the route fragment
+        }) || "Home";  // Default to "Home" if no match
         dispatch(handleMenuClick(activeItem)); // Set the active item based on the path
     }, [location, dispatch]);
+
 
     return (
         <div className='sticky top-0 mx-auto p-6 shadow-lg bg-gray-800 w-full'>
