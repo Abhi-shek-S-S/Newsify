@@ -141,7 +141,7 @@ function Preference() {
         >
           <motion.div
             ref={modalRef}
-            className="w-[800px] max-h-[90vh] bg-[#4d505c] rounded-[14px] relative p-6 overflow-hidden"
+            className="lg:w-[800px] md:w-[680px] sm:w-[600px] w-[400px] max-h-[90vh] bg-[#4d505c] rounded-[14px] relative lg:p-6 p-3"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
@@ -154,7 +154,7 @@ function Preference() {
               aria-label="Close modal"
             >
               <img
-                src="/public/Images/close.svg"
+                src="/Images/close.svg"
                 className="w-5 h-5"
                 alt="Close"
               />
@@ -171,10 +171,10 @@ function Preference() {
             </div>
 
             {/* Modal Content */}
-            <div className="flex border-t border-b border-white/20">
+            <div className="flex md:flex-row flex-col border-t border-b border-white/20 overflow-auto sm:h-customh8 h-customh9 scrollbar-gray">
               {/* Selection Section */}
-              <div className="w-[60%] border-r border-white/20 pr-4 py-4">
-                <div className="space-y-6 pr-2 overflow-y-auto max-h-[50vh] scrollbar_gray">
+              <div className="md:w-[60%] w-full border-r border-white/20 pr-4 py-4">
+                <div className="space-y-6 pr-2 overflow-y-auto h-customh7 scrollbar_gray">
                   {categories.map((category) => (
                     <div
                       key={category.title}
@@ -207,7 +207,7 @@ function Preference() {
               </div>
 
               {/* Selected Topics Section */}
-              <div className="w-[40%] p-4">
+              <div className="md:w-[40%] w-full md:p-4 p-0">
                 <div className="bg-gray-700/50 rounded-lg p-4 h-full">
                   <h3 className="text-lg font-semibold text-white mb-4">
                     Selected Topics

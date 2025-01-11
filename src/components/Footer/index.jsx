@@ -4,7 +4,7 @@ function Footer() {
         <div>
             <div className="flex w-full justify-between items-center px-10 pt-10 pb-5">
                 <div className="flex items-center">
-                    <img src="/public/Images/logo .webp" className='w-20 h-20 mr-4 ' alt="logo" />
+                    <img src="/Images/logo .webp" className='w-20 h-20 mr-4 ' alt="logo" />
                     <p className="text-white font-extrabold text-[37px] break-words flex flex-col">INSIGHT TIMES </p>
                 </div>
                 <div className="flex items-center">

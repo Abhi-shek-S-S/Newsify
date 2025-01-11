@@ -31,9 +31,9 @@ const HorizontalArticle = ({ article, index }) => (
         custom={index}
         className="w-full bg-gray-700 mb-3 rounded-lg overflow-hidden hover:bg-gray-600 transition-colors"
     >
-        <div className="flex gap-6 p-4">
+        <div className="flex gap-6 p-4 md:flex-row flex-col">
             <motion.div
-                className="w-1/3 h-48 flex-shrink-0"
+                className="md:w-1/3 w-full h-48 flex-shrink-0"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
@@ -45,7 +45,7 @@ const HorizontalArticle = ({ article, index }) => (
                     loading="lazy"
                 />
             </motion.div>
-            <div className="w-2/3 flex flex-col justify-between">
+            <div className="md:w-2/3 w-full flex flex-col justify-between">
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}

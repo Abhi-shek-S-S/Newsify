@@ -41,7 +41,7 @@ const MainPage = () => {
   const filteredArticles = articles.filter((article) => article.content !== "[Removed]");
 
   return (
-    <div className="article-list w-[70%] mx-auto" style={{ padding: '20px' }}>
+    <div className="article-list xl:w-[70%] sm:w-[95%] w-full mx-auto" style={{ padding: '20px' }}>
       <p className='text-3xl font-semibold text-white mb-3'>India</p>
       {filteredArticles.map((article, index) => (
         <HorizontalArticle key={index} article={article} index={index} />

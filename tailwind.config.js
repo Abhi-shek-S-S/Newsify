@@ -18,7 +18,11 @@ export default {
         customh4: "calc(100vh - 666px)",
         customh5: "calc(100vh - 513px)",
         customh6: "calc(100vh - 100px)",
-        customh7: "calc(100vh - 2898px)",
+        customh7: "calc(100vh - 345px)",
+        customh8: "calc(100vh - 310px)",
+        customh9: "calc(100vh - 330px)",
+
+
 
       }
     },

@@ -52,7 +52,7 @@ const ForYouPage = () => {
   const hasSourceResults = sourceResults && sourceResults.length > 0;
 
   return (
-    <div className="p-4 w-[70%] mx-auto">
+    <div className="p-4 xl:w-[70%] w-[95%] mx-auto">
       <p className="text-3xl font-bold mb-3 text-white">For You</p>
 
       {!hasSelections ? (
@@ -76,7 +76,7 @@ const ForYouPage = () => {
           {/* Source Headlines */}
           {selectedSources.length > 0 && (
             <div>
-              <h2 className="text-xl font-semibold mb-4">Top Stories by Source</h2>
+              <h2 className="text-xl font-semibold mb-4 text-white">Top Stories by Source</h2>
               {hasSourceResults ? (
                 <SourceHeadlines articles={sourceResults} />
               ) : (

@@ -8,9 +8,9 @@ const SourceHeadlines = ({ articles }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {articles.map((article, index) => (
-        <div key={index} className="p-4 bg-gray-100 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold mb-2">{article.title}</h3>
-          <p className="text-sm text-gray-700 mb-2">{article.description}</p>
+        <div key={index} className="p-4 bg-[#f3f4f624] rounded-lg shadow-md">
+          <h3 className="text-lg font-semibold mb-2 text-gray-100">{article.title}</h3>
+          <p className="text-sm mb-2 text-gray-400">{article.description}</p>
           <a
             href={article.url}
             target="_blank"
