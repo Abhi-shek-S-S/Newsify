@@ -174,7 +174,7 @@ function Preference() {
             <div className="flex border-t border-b border-white/20">
               {/* Selection Section */}
               <div className="w-[60%] border-r border-white/20 pr-4 py-4">
-                <div className="space-y-6 pr-2 overflow-y-auto max-h-[50vh] scrollbar-thin scrollbar-thumb-white/20">
+                <div className="space-y-6 pr-2 overflow-y-auto max-h-[50vh] scrollbar_gray">
                   {categories.map((category) => (
                     <div
                       key={category.title}

@@ -52,11 +52,11 @@ const ForYouPage = () => {
   const hasSourceResults = sourceResults && sourceResults.length > 0;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-6">For You</h1>
+    <div className="p-4 w-[70%] mx-auto">
+      <p className="text-3xl font-bold mb-3 text-white">For You</p>
 
       {!hasSelections ? (
-        <p className="text-xl text-gray-500">
+        <p className="text-xl text-white">
           No topics selected. Please choose topics to see relevant stories.
         </p>
       ) : (
@@ -64,7 +64,7 @@ const ForYouPage = () => {
           {/* Category Headlines */}
           {selectedCategories.length > 0 && (
             <div className="mb-6">
-              <h2 className="text-xl font-semibold mb-4">Top Stories by Category</h2>
+              <h2 className="text-xl font-semibold mb-4 text-white">Top Stories by Category</h2>
               {hasCategoryResults ? (
                 <CategoryHeadlines articles={categoryResults} />
               ) : (

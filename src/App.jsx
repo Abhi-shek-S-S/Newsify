@@ -38,7 +38,7 @@ function App() {
           onSearchChange={setSearch}
         />
 
-        <div className="main-content">
+        <div className="main-content bg-gray-900 ">
           {/* Routes for your pages */}
           <Routes>
             <Route path="/" element={<HomePage />} />

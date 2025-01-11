@@ -31,7 +31,7 @@ const HomePage = () => {
 
   return (
     <div className='bg-gray-900'>
-      <PageHeader today={today}/>
+      <PageHeader today={today} />
       <div className="flex lg:flex-row flex-col xl:w-[80%] lg:w-[95%] w-[90%] mx-auto py-5 lg:h-customh6 lg:overflow-hidden">
         {/* Top Stories Section */}
         <div className="lg:w-[60%] w-full p-3 bg-[#5d687973] h-full overflow-auto scrollbar_gray rounded-xl">
@@ -53,11 +53,6 @@ const HomePage = () => {
                             alt={headline?.title}
                             className="object-cover rounded"
                           />
-                          <p className='mt-2 text-[#3B82F6] font-normal text-sm'>
-                            Published at - {new Date(headline?.publishedAt).toLocaleString('en-US', {
-                              weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true
-                            })}
-                          </p>
                         </div>
                       )}
                       <div className="text-white">
@@ -66,6 +61,11 @@ const HomePage = () => {
                           <h3 className="font-semibold text-xl hover:underline cursor-pointer">{headline.title}</h3>
                         </a>
                         <p className='text-sm font-normal text-white mt-0.5'>{headline.description}</p>
+                        <p className='mt-2 text-[#3B82F6] font-normal text-sm'>
+                          Published at - {new Date(headline?.publishedAt).toLocaleString('en-US', {
+                            weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true
+                          })}
+                        </p>
                       </div>
                     </div>
                   </div>

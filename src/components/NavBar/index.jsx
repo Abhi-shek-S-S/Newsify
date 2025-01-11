@@ -52,9 +52,9 @@ function NavBar() {
     };
 
     // Handle modals
-    const handleFilterModalOpen = () => {
-        dispatch(setIsFilterModalOpen(true));
-    };
+    // const handleFilterModalOpen = () => {
+    //     dispatch(setIsFilterModalOpen(true));
+    // };
 
     const handlePreferenceModalOpen = () => {
         dispatch(setIsPreferenceModalOpen(true));
@@ -98,7 +98,7 @@ function NavBar() {
         <div className='sticky top-0 mx-auto p-6 shadow-lg bg-gray-800 w-full'>
             <div className="w-full flex xl:flex-row flex-col xl:tems-center xl:justify-between ">
                 <div className="w-[25%] flex items-center">
-                    <img src="/public/Images/logo .webp" className='w-20 h-20 mr-4 ' alt="logo" />
+                    <img src="/Images/logo .webp" className='w-20 h-20 mr-4 ' alt="logo" />
                     <p className="text-white font-extrabold text-[37px] break-words flex flex-col">Newsify</p>
                 </div>
                 <div className='flex items-center xl:justify-end justify-between xl:w-[75%] w-full'>
@@ -116,14 +116,14 @@ function NavBar() {
                     </div>
                 </div>
                 <div className="w-[20%] flex items-center justify-end">
-                    <button type='button'
+                    {/* <button type='button'
                         title='Preference'
                         onClick={handleFilterModalOpen}
                         className='cursor-pointer'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" alt="Preference" className='bg-white rounded-full p-3 cursor-pointer w-12 h-12 '>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
                         </svg>
-                    </button>
+                    </button> */}
                     <button type='button' onClick={handlePreferenceModalOpen} className=' ml-3 px-6 py-1 rounded-lg flex items-center justify-between text-white text-lg font-normal border-white border'>
                         Preference
                         <img src="/Images/filter.png" alt="Preference" className="p-2 rounded-full w-10 h-10 ml-2" />
