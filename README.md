@@ -79,21 +79,6 @@ VITE_NYT_API_KEY=your_key         # NYT API key
 VITE_API_CACHE_DURATION=3600      # Cache duration in seconds
 
 
-## 📁 Project Structure
-
-
-news-aggregator/
-├── src/
-│   ├── components/       # React components
-│   ├── redux/           # State management and API services
-│   ├── pages/           # Page components
-│   └── App.jsx          # Root component
-├── Dockerfile           # Docker configuration
-├── docker-compose.yml   # Docker Compose config
-├── .env                 # Environment variables
-└── package.json         # Project dependencies
-
-
 ## 🔍 Usage
 
 1. Access the application at http://localhost:3000
@@ -101,35 +86,6 @@ news-aggregator/
 3. Filter news by category using the dropdown menu
 4. Click on articles to read full content
 5. Use the pagination controls to navigate through results
-
-## 🧪 Testing
-
-Run the test suite:
-bash
-npm run test
-
-
-For coverage report:
-bash
-npm run test:coverage
-
-
-## 📚 API Documentation
-
-### NewsAPI Integration
-javascript
-const fetchNewsApiArticles = async () => {
-  const response = await fetch(`${NEWS_API_BASE_URL}?apiKey=${API_KEY}`);
-  return response.json();
-};
-
-
-### NYT API Integration
-javascript
-const fetchNYTArticles = async () => {
-  const response = await fetch(`${NYT_API_BASE_URL}?api-key=${API_KEY}`);
-  return response.json();
-};
 
 
 ## 🔄 Contributing
@@ -164,11 +120,5 @@ Common issues and solutions:
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-## 📞 Contact
-
-
-Project Link: [https://github.com/yourusername/news-aggregator](https://github.com/yourusername/news-aggregator)
-
----
 
 Don't forget to give the project a star! ⭐ Thanks for visiting!
