@@ -1,5 +1,4 @@
 
-
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -24,6 +23,7 @@ const WeatherWidget = () => {
 
             setLoading(false);
         } catch (err) {
+            console.error(err)
             setError('Unable to fetch weather details.');
             setLoading(false);
         }
@@ -37,6 +37,7 @@ const WeatherWidget = () => {
                     fetchWeather(latitude, longitude);
                 },
                 (err) => {
+                    console.error(err)
                     setError('Location access denied. Unable to fetch weather details.');
                     setLoading(false);
                 }
@@ -51,15 +52,15 @@ const WeatherWidget = () => {
         getLocation();
     }, []);
 
-    if (loading) return <div>Loading weather...</div>;
+    if (loading) return <div className='text-white'>Loading weather...</div>;
     if (error) return <div>{error}</div>;
 
     return (
         <div className="bg-gray-900 text-white p-4 rounded-lg flex items-center space-x-4">
-            <div className="text-4xl">🌤️</div>
+            <div className="sm:text-4xl text-2xl">🌤️</div>
             <div>
-                <div className="text-lg font-semibold">{locationName.toUpperCase()}</div>
-                <div className="text-2xl">{Math.round(weather?.temperature)}°C</div>
+                <div className="sm:text-lg text-sm font-semibold">{locationName.toUpperCase()}</div>
+                <div className="sm:text-2xl text-sm">{Math.round(weather?.temperature)}°C</div>
                 <a
                     href="https://weather.com"
                     target="_blank"

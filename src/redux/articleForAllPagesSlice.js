@@ -5,7 +5,7 @@ export const fetchArticles = createAsyncThunk(
   async (menuType, { getState, rejectWithValue }) => {
     try {
       const { page, pageSize } = getState().articlesForAllPages;
-      const apiKey = import.meta.env.VITE_APP_NEWSAPI_KEY; // Fetch the API key from environment variables
+      const apiKey = import.meta.env.VITE_APP_NEWSAPI_KEY;
       const response = await fetch(
         `https://newsapi.org/v2/everything?q=${menuType}&pageSize=${pageSize}&page=${page}&apiKey=${apiKey}`
       );
@@ -22,7 +22,7 @@ export const fetchArticles = createAsyncThunk(
         return rejectWithValue(data.message || 'No articles found.');
       }
 
-      return data.articles; // Return articles on success
+      return data.articles;
     } catch (error) {
       // Handle network or unexpected errors
       return rejectWithValue(error.message || 'An unexpected error occurred.');
@@ -43,28 +43,28 @@ const articlesSlice = createSlice({
   reducers: {
     resetArticles: (state) => {
       state.articles = [];
-      state.page = 1; // Reset the page to 1
+      state.page = 1; 
       state.hasMore = true;
-      state.error = null; // Optional: Reset error state
+      state.error = null;
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchArticles.pending, (state) => {
         state.loading = true;
-        state.error = null; // Clear previous errors on new request
+        state.error = null; 
       })
       .addCase(fetchArticles.fulfilled, (state, action) => {
         if (action.payload.length < state.pageSize) {
-          state.hasMore = false; // No more pages to load
+          state.hasMore = false;
         }
-        state.articles = [...state.articles, ...action.payload]; // Append new articles
-        state.page += 1; // Increment the page number
+        state.articles = [...state.articles, ...action.payload]; 
+        state.page += 1;
         state.loading = false;
       })
       .addCase(fetchArticles.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || 'An error occurred while fetching articles.'; // Set the error message
+        state.error = action.payload || 'An error occurred while fetching articles.';
       });
   }
 });

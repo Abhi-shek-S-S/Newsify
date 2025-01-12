@@ -9,16 +9,14 @@ export const searchArticles = createAsyncThunk(
       const API_KEY = import.meta.env.VITE_APP_NEWSAPI_KEY;
       let url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(searchTerm)}`;
       
-      // Add date parameters if they exist
       if (fromDate) {
         url += `&from=${fromDate}`;
       }
       if (toDate) {
         url += `&to=${toDate}`;
       }
-      
-      url += `&apiKey=${API_KEY}`;
 
+      url += `&apiKey=${API_KEY}`;
       const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${API_KEY}`,

@@ -14,22 +14,21 @@ const SearchResults = () => {
 
   if (error) {
     return (
-      <EmptyScreen message={`Failed to fetch articles: ${error}`} />
+      <EmptyScreen message={`Failed to fetch articles: ${error}`} height={'calc(100vh - 211px)'} />
     );
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Search Results for &quot;{search}&quot;</h1>
+    <div className="container mx-auto p-6 bg-gray-900">
+      <p className="sm:text-2xl text-lg font-bold mb-6 text-white">Search Results for <span className='text-red-600'>&quot;{search}&quot;</span></p>
       {searchResults.length === 0 ? (
         <p className="text-gray-600">No results found</p>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {searchResults.map((result) => (
             <div key={result.id} className="border rounded-lg p-4 shadow-sm">
-              <h2 className="text-xl font-semibold mb-2">{result.title}</h2>
-              <p className="text-gray-600">{result.description}</p>
-              {/* Add more result details as needed */}
+              <h2 className="text-lg font-normal mb-2 text-white underline">{result.title}</h2>
+              <p className="text-gray-400">{result.description}</p>
             </div>
           ))}
         </div>

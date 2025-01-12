@@ -1,4 +1,3 @@
-import React from 'react';
 import LoadingShimmer from '../../components/LoadingIndicator';
 import EmptyScreen from '../../components/EmptyScreen';
 import { formatDate } from '../CommonMethods/dateFormat';
@@ -6,9 +5,9 @@ import { formatDate } from '../CommonMethods/dateFormat';
 const TrendingNewsSection = ({ status, error, trendingNews }) => {
   return (
     <div className="w-full p-3 bg-[#5d687973] mb-3 max-h-[40%] overflow-auto scrollbar_gray rounded-xl">
-      <p className="text-white pb-2 mb-4 border-b border-white text-2xl font-bold">Trending Now</p>
+      <p className="text-white pb-2 mb-4 border-b border-white sm:text-2xl text-lg font-bold">Trending Now</p>
       {status === 'loading' && <LoadingShimmer />}
-      {status === 'failed' && <EmptyScreen message={error} />}
+      {status === 'failed' && <EmptyScreen message={error} height={'h-fit'} />}
       {status === 'succeeded' && trendingNews.length === 0 && (
         <EmptyScreen message="No trending news found." />
       )}
@@ -30,7 +29,7 @@ const TrendingNewsSection = ({ status, error, trendingNews }) => {
                     {news.section}
                   </p>
                   <a href={news.url} target="_blank" rel="noopener noreferrer">
-                    <h3 className="font-semibold text-xl hover:underline cursor-pointer">
+                    <h3 className="font-semibold sm:text-xl text-lg hover:underline cursor-pointer">
                       {news.title}
                     </h3>
                   </a>

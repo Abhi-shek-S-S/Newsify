@@ -18,15 +18,11 @@ export const fetchEverythingByCategory = createAsyncThunk(
   async (categories, { rejectWithValue }) => {
     try {
       const promises = categories.map(category => {
-        // Lowercase the category and encode any spaces
         const formattedCategory = encodeURIComponent(category.toLowerCase());
-
-        // Build the new API URL
         const url = `https://api.nytimes.com/svc/topstories/v2/${formattedCategory}.json`;
-
         return axios.get(url, {
           params: {
-            "api-key": NY_API_KEY, // Pass the API key
+            "api-key": NY_API_KEY,
           },
         });
       });

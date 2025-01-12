@@ -1,10 +1,8 @@
 import { useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const Source = ({ sources = [] }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const navigate = useNavigate();
     const itemsPerView = 4;
     const maxIndex = Math.max(0, Math.ceil(sources.length / itemsPerView) - 1);
 
@@ -16,12 +14,8 @@ const Source = ({ sources = [] }) => {
         setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
     }, [maxIndex]);
 
-    const handleShowMore = useCallback(() => {
-        navigate('/sources');
-    }, [navigate]);
-
     const SourceCard = useCallback(({ source }) => (
-        <div className="flex-shrink-0 w-1/4 m-2 p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors duration-300">
+        <div className="flex-shrink-0 lg:w-1/4 max-w-[260px] m-2 p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors duration-300">
             <div className="h-48 flex flex-col justify-between">
                 <div>
                     <h3 className="text-lg font-bold text-white mb-2">{source.name}</h3>
@@ -31,9 +25,9 @@ const Source = ({ sources = [] }) => {
                     <span className="text-xs text-gray-400 bg-gray-700 px-2 py-1 rounded">
                         {source.category}
                     </span>
-                    <a 
-                        href={source.url} 
-                        target="_blank" 
+                    <a
+                        href={source.url}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="mt-2 text-blue-400 hover:text-blue-300 text-sm block"
                     >
@@ -47,18 +41,12 @@ const Source = ({ sources = [] }) => {
     if (!sources.length) return null;
 
     return (
-        <div className="relative w-[80%] mx-auto bg-gray-900 p-4 rounded-lg mt-8">
+        <div className="relative xl:w-[80%] w-full mx-auto bg-gray-900 p-4 rounded-lg mt-8">
             <div className="flex justify-between items-end mb-6">
                 <div>
-                    <h2 className="text-white text-2xl font-bold">Sources</h2>
+                    <h2 className="text-white sm:text-2xl text-lg font-bold">Sources</h2>
                     <p className="text-gray-400 text-sm">Top news sources for you</p>
                 </div>
-                <button 
-                    onClick={handleShowMore}
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                    View All →
-                </button>
             </div>
 
             <div className="relative overflow-hidden">

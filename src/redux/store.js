@@ -17,6 +17,5 @@ export const store = configureStore({
     articlesForAllPages: articlesReducer,
     preferences: preferencesReducer,
     newsShowcase: newsShowcaseReducer,
-
   },
 });

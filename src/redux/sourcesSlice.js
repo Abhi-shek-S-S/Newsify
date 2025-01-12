@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_KEY = import.meta.env.VITE_APP_NEWSAPI_KEY;  // Fetch the API key from environment variables;
+const API_KEY = import.meta.env.VITE_APP_NEWSAPI_KEY; 
 
 // Async thunk to fetch sources
 export const fetchSources = createAsyncThunk('sources/fetchSources', async () => {

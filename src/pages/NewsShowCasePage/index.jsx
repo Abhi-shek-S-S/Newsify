@@ -29,16 +29,16 @@ const NewsShowCase = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <p className="text-4xl font-extrabold text-center mb-12 text-white">
+    <div className="container mx-auto px-4 py-8 bg-gray-900">
+      <p className="text-4xl font-extrabold text-start mb-12 text-white">
         Most Viwed Articles
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {articles.map((article) => (
           <motion.div
             key={article.uri}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.0 }}
+            whileTap={{ scale: 0.65 }}
             className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
           >
             {article.media?.[0]?.['media-metadata']?.[2]?.url && (
@@ -48,16 +48,19 @@ const NewsShowCase = () => {
                 className="w-full h-48 object-cover"
               />
             )}
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">
+            <div className="p-6 bg-gray-800 flex flex-col justify-between h-[250px]">
+              <div>
+              <h2 className="sm:text-2xl text-lg font-bold text-white mb-3">
                 {article.title}
               </h2>
-              <p className="text-gray-600 mb-4 line-clamp-3">{article.abstract}</p>
+              <p className="text-white mb-4 line-clamp-3">{article.abstract}</p>
+              </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">
                   <p className="text-sm text-gray-500">
                     {formatDate(article.published_date)}
-                  </p>                </span>
+                  </p>
+                </span>
                 <a
                   href={article?.url}
                   target="_blank"

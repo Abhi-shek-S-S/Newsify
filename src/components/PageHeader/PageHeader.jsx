@@ -1,17 +1,12 @@
-import { motion } from 'framer-motion';
 import WeatherWidget from '../WeatherWidget';
 
 const PageHeader = ({ today }) => {
     return (
-        <div className='flex justify-between items-center w-[80%] mx-auto'>
-            <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-            >
-                <p className="text-2xl font-medium text-white">Brief Overview</p>
+        <div className='flex justify-between items-center sm:w-[80%] w-[90%] mx-auto sm:py-0 py-4 h-[110px]'>
+            <div>
+                <p className="sm:text-2xl text-lg font-medium text-white">Brief Overview</p>
                 <p className="text-sm text-[#DDDDDD] font-normal">{today}</p>
-            </motion.div>
+            </div>
 
             <div>
                 <WeatherWidget />

@@ -1,40 +1,37 @@
-// features/topHeadlinesSlice.js
+/* eslint-disable no-unused-vars */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Fetch top headlines from NewsAPI
 export const fetchTopHeadlines = createAsyncThunk(
   'topHeadlines/fetchTopHeadlines',
   async () => {
-    const apiKey = import.meta.env.VITE_APP_NEWSAPI_KEY; // Fetch the API key from environment variables
+    const apiKey = import.meta.env.VITE_APP_NEWSAPI_KEY;
     const response = await axios.get(
       `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`
     );
-    return response.data.articles; // Assuming 'articles' is the array of top headlines
+    return response.data.articles;
   }
 );
 
-// Fetch local news based on country
 export const fetchLocalNews = createAsyncThunk(
   'topHeadlines/fetchLocalNews',
   async (country) => {
-    const apiKey = import.meta.env.VITE_APP_NEWSAPI_KEY; // Fetch the API key from environment variables
+    const apiKey = import.meta.env.VITE_APP_NEWSAPI_KEY; 
     const response = await axios.get(
       `https://newsapi.org/v2/everything?q=latest&pagesize=30&apiKey=${apiKey}`
     );
-    return response.data.articles; // Assuming 'articles' is the array of local news
+    return response.data.articles;
   }
 );
 
-// Fetch trending news from the NY Times API
 export const fetchTrendingNews = createAsyncThunk(
   'topHeadlines/fetchTrendingNews',
   async () => {
-    const apiKey = import.meta.env.VITE_APP_NEW_YORK_TIMES_KEY; // NY Times API key
+    const apiKey = import.meta.env.VITE_APP_NEW_YORK_TIMES_KEY;
     const response = await axios.get(
       `https://api.nytimes.com/svc/topstories/v2/home.json?api-key=${apiKey}`
     );
-    return response.data.results; // Assuming 'results' contains the trending news
+    return response.data.results;
   }
 );
 
@@ -42,11 +39,11 @@ export const fetchTrendingNews = createAsyncThunk(
 const topHeadlinesSlice = createSlice({
   name: 'topHeadlines',
   initialState: {
-    headlines: [], // Stores top headlines
-    localNews: [], // Stores local news
-    trendingNews: [], // Stores trending news
-    status: 'idle', // API call status ('idle' | 'loading' | 'succeeded' | 'failed')
-    error: null, // Error message (if any)
+    headlines: [], 
+    localNews: [], 
+    trendingNews: [], 
+    status: 'idle', 
+    error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -63,7 +60,7 @@ const topHeadlinesSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
-      // Local news
+      // Latest news
       .addCase(fetchLocalNews.pending, (state) => {
         state.status = 'loading';
       })

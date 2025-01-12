@@ -23,8 +23,12 @@ function NavBar() {
     const { search, isPreferenceModalOpen, active } = useSelector((state) => state.navBar);
     const [menuOpen, setMenuOpen] = useState(false);
 
-    // Handle menu item click
+    /**
+     * The function `handleMenuItemClick` handles menu item clicks by closing the menu, dispatching an
+     * action, and navigating to different routes based on the selected item.
+     */
     const handleMenuItemClick = (item) => {
+        if (setMenuOpen) setMenuOpen(false);
         dispatch(handleMenuClick(item));
 
         if (item === 'Home') {
@@ -38,15 +42,20 @@ function NavBar() {
         }
     };
 
-
-
-    // Handle preference modal open
+    /**
+     * The function `handlePreferenceModalOpen` dispatches actions to fetch sources and set a preference
+     * modal open state.
+     */
     const handlePreferenceModalOpen = () => {
         dispatch(fetchSources());
         dispatch(setIsPreferenceModalOpen(true));
     };
 
-    // Handle search change with URL updates
+    /**
+     * The handleSearch function takes search term, from date, and to date as parameters, constructs a
+     * URL query string based on the parameters, navigates to the search page with the query string, and
+     * dispatches a searchArticles action.
+     */
     const handleSearch = ({ searchTerm, fromDate, toDate }) => {
         if (searchTerm.trim()) {
             const params = new URLSearchParams();
@@ -59,12 +68,16 @@ function NavBar() {
         }
     };
 
+
+    /**
+     * The handleClear function dispatches an action to clear search results and navigates to the home page.
+     */
     const handleClear = () => {
         dispatch(clearSearchResults());
         navigate('/');
-      };
+    };
 
-    // Handle initial load and URL search parameter
+    /* This `useEffect` hook is responsible for handling the initial load and URL search parameters in the NavBar component.*/
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const queryParam = params.get('q');
@@ -83,21 +96,23 @@ function NavBar() {
         } else if (location.pathname === '/search' && !queryParam) {
             navigate('/');
         }
-    }, [location.pathname, dispatch, navigate]);
+    }, [location.pathname, dispatch, navigate, location.search]);
 
-    // Debounced search effect
+
+    /* The `useEffect` hook you provided is implementing a debounced search effect. */
     useEffect(() => {
         const debounceTimer = setTimeout(() => {
             if (search.trim()) {
                 dispatch(searchArticles(search.trim()));
             }
-        }, 500); // 500ms debounce delay
-
-        // Cleanup timeout on component unmount or when search changes
+        }, 500);
         return () => clearTimeout(debounceTimer);
     }, [search, dispatch]);
 
-    // Update the active menu item based on the current path
+
+    /* This `useEffect` hook is responsible for updating the active menu item based on the current path
+    in the NavBar component. It first retrieves the current path from `location.pathname`. Then, it
+    searches for the corresponding menu item in the `MENU_ITEMS` array based on the path. */
     useEffect(() => {
         const path = location.pathname;
         const activeItem =
@@ -112,15 +127,15 @@ function NavBar() {
 
 
     return (
-        <div className="sticky top-0 mx-auto p-6 shadow-lg bg-gray-800 w-full">
-            <div className="w-full flex xl:flex-row flex-col xl:items-center xl:justify-between">
+        <div className="sticky top-[-1px] mx-auto p-6 shadow-lg bg-gray-800 w-full">
+            <div className="xl:w-[90%] md:w-[95%] w-full mx-auto flex xl:flex-row flex-col xl:items-center xl:justify-between">
                 <div className="w-[25%] flex items-center">
-                    <img src="/Images/logo .webp" className="w-20 h-20 mr-4" alt="logo" />
+                    <img src="/Images/logo .webp" className="w-20 h-20 mr-4 rounded-full" alt="logo" />
                     <p className="text-white font-extrabold text-[37px] break-words flex flex-col">Newsify</p>
                 </div>
                 <div className="flex items-center xl:justify-end justify-between xl:w-[75%] w-full">
-                    <div className="md:w-[60%] w-full md:mb-0 my-3">
-                        <div className="flex w-full p-[13px] items-center justify-end gap-2 flex-1 dark:bg-gray-700 dark:border-gray-600 border rounded-md">
+                    <div className="md:w-[70%] w-full md:mb-0 my-3">
+                        <div className="flex w-full xl:p-[13px] py-2.5 items-center justify-end gap-2 flex-1 dark:bg-gray-700 dark:border-gray-600 rounded-md">
                             <EnhancedSearchBar
                                 value={search}
                                 onChange={(value) => dispatch(setSearch(value))}
@@ -133,7 +148,7 @@ function NavBar() {
                             />
                         </div>
                     </div>
-                    <div className="md:w-[25%] w-full  items-center justify-end lg:block flex">
+                    <div className="md:w-[18%] w-full items-center justify-end sm:flex hidden">
                         <button
                             type="button"
                             onClick={handlePreferenceModalOpen}
@@ -154,8 +169,7 @@ function NavBar() {
                             onClick={() => handleMenuItemClick(item)}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className={`text-base font-normal cursor-pointer transition duration-300 ease-in-out ${active === item ? 'border-b-4 rounded border-blue-500 text-blue-500' : 'text-white border-transparent'
-                                }`}
+                            className={`text-base font-normal cursor-pointer transition duration-300 ease-in-out ${active === item ? 'border-b-4 rounded border-blue-500 text-blue-500' : 'text-white border-transparent'}`}
                         >
                             {item}
                         </motion.li>
@@ -163,7 +177,39 @@ function NavBar() {
                 </ul>
             </div>
             <div className='flex justify-between items-center w-full'>
-                <div className="md:w-[20%] w-full lg:hidden block">
+                <div className="lg:hidden">
+                    <button
+                        className="text-white focus:outline-none py-3"
+                        onClick={() => setMenuOpen(!menuOpen)}
+                    >
+                        <img src="/Images/hamburger.svg" alt="hamburger" className='w-8 h-8' />
+                    </button>
+                    {menuOpen && (
+                        <ul className="mt-4 space-y-4 absolute top-[-15px] left-0 w-[80%] bg-[#333d4b] shadow-lg p-4 rounded-tl-lg rounded-bl-lg h-screen pointer-events-auto">
+                            {MENU_ITEMS.map((item) => (
+                                <motion.li
+                                    key={item}
+                                    onClick={() => handleMenuItemClick(item)}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className={`text-base font-normal cursor-pointer transition duration-300 ease-in-out ${active === item
+                                        ? "border-b-4 w-[80%] rounded border-blue-500 text-blue-500"
+                                        : "text-white border-transparent"
+                                        }`}
+                                >
+                                    {item}
+                                </motion.li>
+                            ))}
+                            <img
+                                onClick={() => setMenuOpen(false)}
+                                src="/Images/close.svg"
+                                className="w-5 h-5 absolute right-3 top-1 cursor-pointer bg-white p-0.5 rounded-full"
+                                alt="Close"
+                            />
+                        </ul>
+                    )}
+                </div>
+                <div className="md:w-[20%] sm:hidden block">
                     <button
                         type="button"
                         onClick={handlePreferenceModalOpen}
@@ -172,46 +218,6 @@ function NavBar() {
                         Preferences
                         <img src="/Images/filter.png" alt="Preference" className="p-2 rounded-full w-10 h-10 ml-2" />
                     </button>
-                </div>
-                <div className="lg:hidden">
-                    <button
-                        className="text-white focus:outline-none"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                    >
-                        {/* Hamburger Icon */}
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M4 6h16M4 12h16m-7 6h7"
-                            />
-                        </svg>
-                    </button>
-                    {menuOpen && (
-                        <ul className="mt-4 space-y-4">
-                            {MENU_ITEMS.map((item) => (
-                                <motion.li
-                                    key={item}
-                                    onClick={() => handleMenuClick(item)}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className={`text-base font-normal cursor-pointer transition duration-300 ease-in-out ${state.active === item
-                                        ? "border-b-4 rounded border-blue-500 text-blue-500"
-                                        : "text-white border-transparent"
-                                        }`}
-                                >
-                                    {item}
-                                </motion.li>
-                            ))}
-                        </ul>
-                    )}
                 </div>
             </div>
             {isPreferenceModalOpen && <Preference />}

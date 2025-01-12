@@ -1,4 +1,3 @@
-import React from "react";
 
 const SourceHeadlines = ({ articles }) => {
   if (!articles || articles.length === 0) {

@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import CategoryHeadlines from "./Components/CategoryHeadlines";
 import SourceHeadlines from "./Components/SourcesHeadlines";
 import EmptyScreen from "../../components/EmptyScreen";
-import { 
-  fetchEverythingByCategory, 
-  fetchTopHeadlinesBySource 
+import {
+  fetchEverythingByCategory,
+  fetchTopHeadlinesBySource
 } from "../../redux/preferenceSlice";
 
 const ForYouPage = () => {
@@ -18,6 +18,8 @@ const ForYouPage = () => {
   const error = useSelector((state) => state.preferences.error);
   const loading = useSelector((state) => state.preferences.loading);
 
+  /* This `useEffect` hook in the `ForYouPage` component is responsible for fetching news data based on
+  the selected categories and sources. Here's a breakdown of what it does: */
   useEffect(() => {
     if (selectedCategories.length === 0 && selectedSources.length === 0) {
       dispatch({ type: 'preferences/resetCategoryResults' });
@@ -51,15 +53,13 @@ const ForYouPage = () => {
   const renderContent = () => {
     if (!hasSelections) {
       return (
-        <p className="text-xl text-white">
-          No topics selected. Please choose topics to see relevant stories.
-        </p>
+        <EmptyScreen message="No topics selected. Please choose topics to see relevant stories." />
       );
     }
 
     if (error) {
       return (
-        <EmptyScreen message={`Failed to fetch articles: ${error}`}/>
+        <EmptyScreen message={`Failed to fetch articles: ${error}`} />
       );
     }
 
@@ -73,7 +73,6 @@ const ForYouPage = () => {
 
     return (
       <div className="space-y-8">
-        {/* Category Headlines */}
         {selectedCategories.length > 0 && (
           <div className="mb-6">
             <h2 className="text-xl font-semibold mb-4 text-white">Top Stories by Category</h2>
@@ -85,7 +84,6 @@ const ForYouPage = () => {
           </div>
         )}
 
-        {/* Source Headlines */}
         {selectedSources.length > 0 && (
           <div>
             <h2 className="text-xl font-semibold mb-4 text-white">Top Stories by Source</h2>

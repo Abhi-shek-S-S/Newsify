@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Search, ChevronDown, ChevronUp, Calendar, X } from 'lucide-react';
 
 const EnhancedSearchBar = ({ onSearch, value, onChange, onClear, initialDates = {} }) => {
@@ -6,35 +6,25 @@ const EnhancedSearchBar = ({ onSearch, value, onChange, onClear, initialDates = 
   const [fromDate, setFromDate] = useState(initialDates.fromDate || '');
   const [toDate, setToDate] = useState(initialDates.toDate || '');
   const dropdownRef = useRef(null);
-  
-  // Update dates when initialDates changes (e.g., from URL)
-  useEffect(() => {
-    setFromDate(initialDates.fromDate || '');
-    setToDate(initialDates.toDate || '');
-  }, [initialDates]);
-  
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
+  /**
+   * The handleInputChange function updates the input value, toggles the dropdown visibility, and clears
+   * the input if it is empty.
+   */
   const handleInputChange = (inputValue) => {
     onChange(inputValue);
     if (inputValue.trim() && !isDropdownOpen) {
       setIsDropdownOpen(true);
     }
-    // If search input is cleared, trigger onClear
     if (!inputValue.trim()) {
       handleClear();
     }
   };
 
+  /**
+   * The function `handleDateChange` updates the `fromDate` and `toDate` values based on the `dateType`
+   * and `value` parameters, ensuring that `fromDate` is always before or equal to `toDate`.
+   */
   const handleDateChange = (dateType, value) => {
     if (dateType === 'from') {
       setFromDate(value);
@@ -49,6 +39,9 @@ const EnhancedSearchBar = ({ onSearch, value, onChange, onClear, initialDates = 
     }
   };
 
+  /**
+   * The handleClear function clears input fields and closes a dropdown in a React component.
+   */
   const handleClear = () => {
     onChange('');
     setFromDate('');
@@ -56,6 +49,29 @@ const EnhancedSearchBar = ({ onSearch, value, onChange, onClear, initialDates = 
     setIsDropdownOpen(false);
     onClear();
   };
+
+
+  /* The `useEffect` hook in the code snippet is used to update the `fromDate` and `toDate` states when
+ the `initialDates` prop changes. */
+  useEffect(() => {
+    setFromDate(initialDates.fromDate || '');
+    setToDate(initialDates.toDate || '');
+  }, [initialDates]);
+
+
+  /* The `useEffect` hook in the code snippet is setting up an event listener to handle clicks outside
+  of a specific dropdown element. Here's a breakdown of what it's doing: */
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
@@ -65,7 +81,7 @@ const EnhancedSearchBar = ({ onSearch, value, onChange, onClear, initialDates = 
           placeholder="Search articles, locations and sources..."
           value={value}
           onChange={(e) => handleInputChange(e.target.value)}
-          className="w-full focus:outline-none dark:bg-gray-700 text-white"
+          className="w-full focus:outline-none bg-gray-800 text-white"
         />
         {value && (
           <button

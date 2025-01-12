@@ -10,43 +10,42 @@ const MainPage = () => {
   const { articles, loading, hasMore, error } = useSelector((state) => state.articlesForAllPages);
 
   const location = useLocation();
-  const menuType = location.pathname.split('/')[1]; // Get menuType from URL
+  const menuType = location.pathname.split('/')[1];
   const [resetComplete, setResetComplete] = useState(false);
 
+  const handleLoadMore = () => {
+    if (hasMore && !loading) {
+      dispatch(fetchArticles(menuType));
+    }
+  };
+
+  const filteredArticles = articles.filter((article) => article.content !== "[Removed]");
+
   // Trigger reset and fetch on menuType change
+  /* The `useEffect` hook in the provided code snippet is responsible for triggering a reset and fetch
+  action when the `menuType` changes. Here's a breakdown of what it does: */
   useEffect(() => {
-    setResetComplete(false); // Reset the flag
-    dispatch(resetArticles()); // Reset articles and page to 1
-    setResetComplete(true); // Set the flag to true after reset
+    setResetComplete(false);
+    dispatch(resetArticles());
+    setResetComplete(true);
   }, [dispatch, menuType]);
 
   // Fetch articles after reset is complete
   useEffect(() => {
     if (resetComplete) {
-      dispatch(fetchArticles(menuType)); // Initial fetch when reset is done
+      dispatch(fetchArticles(menuType));
     }
   }, [dispatch, menuType, resetComplete]);
 
-  const handleLoadMore = () => {
-    if (hasMore && !loading) {
-      dispatch(fetchArticles(menuType)); // Fetch more articles
-    }
-  };
-
-  // Filter out removed content
-  const filteredArticles = articles.filter((article) => article.content !== "[Removed]");
 
   return (
-    <div className="article-list xl:w-[70%] sm:w-[95%] w-full mx-auto" style={{ padding: '20px' }}>
-      {/* Dynamically display the menuType */}
+    <div className="article-list xl:w-[70%] sm:w-[95%] w-full mx-auto bg-gray-900" style={{ padding: '20px' }}>
       <p className="text-3xl font-semibold text-white mb-3 capitalize">
-        {menuType || 'Home'} {/* Capitalize the menuType */}
+        {menuType || 'Home'}
       </p>
 
-      {/* Failed state */}
       {error && <EmptyScreen message={`Failed to fetch articles: ${error}`} />}
 
-      {/* No articles found */}
       {!error && !loading && filteredArticles.length === 0 && (
         <EmptyScreen message={`No articles found for "${menuType}".`} />
       )}
@@ -82,8 +81,8 @@ const MainPage = () => {
 
       {/* Loading state */}
       {loading && articles.length === 0 && !error && (
-        <div className="text-white text-lg">
-          Loading...
+        <div className="flex justify-center items-center h-customh11">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
         </div>
       )}
     </div>

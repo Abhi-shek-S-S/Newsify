@@ -28,6 +28,21 @@ function Preference() {
   const [tempSources, setTempSources] = useState(selectedSources);
   const [loading, setLoading] = useState(false);
 
+  const categories = [
+    {
+      title: "Sources",
+      icon: "🌍",
+      topics: sources.length ? sources.map((source) => source.name) : ["BBC News"],
+      type: "sources"
+    },
+    {
+      title: "Categories",
+      icon: "🎭",
+      topics: PREFERENCE_CATEGORY_ITEMS,
+      type: "categories"
+    },
+  ];
+
   // Reset temporary selections when modal opens
   useEffect(() => {
     if (isPreferenceModalOpen) {
@@ -50,25 +65,14 @@ function Preference() {
     };
   }, []);
 
-  // Define categories and sources for the modal
-  const categories = [
-    {
-      title: "Sources",
-      icon: "🌍",
-      topics: sources.length ? sources.map((source) => source.name) : ["BBC News"],
-      type: "sources"
-    },
-    {
-      title: "Categories",
-      icon: "🎭",
-      topics: PREFERENCE_CATEGORY_ITEMS,
-      type: "categories"
-    },
-  ];
 
+
+  /**
+   * The `toggleTopic` function toggles a topic in either categories or sources based on the type provided.
+   */
   const toggleTopic = (topic, type) => {
     if (type === "categories") {
-      setTempCategories(prev => 
+      setTempCategories(prev =>
         prev.includes(topic)
           ? prev.filter(t => t !== topic)
           : [...prev, topic]
@@ -82,30 +86,31 @@ function Preference() {
     }
   };
 
+
+  /**
+   * The function `handleSaveAndClose` asynchronously saves user preferences, fetches data based on
+   * selected categories and sources, updates state, and navigates to a new page.
+   */
   const handleSaveAndClose = async () => {
     setLoading(true);
     try {
-      // Only make API calls if there are selections
       const promises = [];
-      
+
       if (tempCategories.length > 0) {
         promises.push(dispatch(fetchEverythingByCategory(tempCategories)).unwrap());
       }
-      
+
       if (tempSources.length > 0) {
         promises.push(dispatch(fetchTopHeadlinesBySource(tempSources)).unwrap());
       }
 
-      // Wait for all API calls to complete
       if (promises.length > 0) {
         await Promise.all(promises);
       }
 
-      // Update Redux state with new selections
       dispatch(setSelectedCategories(tempCategories));
       dispatch(setSelectedSources(tempSources));
 
-      // Navigate and close modal
       navigate("/for-you");
       dispatch(setIsPreferenceModalOpen(false));
     } catch (error) {
@@ -115,6 +120,10 @@ function Preference() {
     }
   };
 
+  /**
+   * The `handleReset` function resets certain state variables, dispatches actions, closes a modal, and
+   * navigates to a specific page.
+   */
   const handleReset = () => {
     setTempCategories([]);
     setTempSources([]);
@@ -123,12 +132,33 @@ function Preference() {
     navigate("/for-you");
   };
 
+  /**
+   * The `handleClose` function saves the selected categories and sources, then closes the preference
+   * modal.
+   */
   const handleClose = () => {
-    // Reset temp selections to current selections when closing without saving
     setTempCategories(selectedCategories);
     setTempSources(selectedSources);
     dispatch(setIsPreferenceModalOpen(false));
   };
+
+
+  /* The above code is a React useEffect hook that is used to manage the overflow style of the document
+  body based on the state variable `isPreferenceModalOpen`. When the `isPreferenceModalOpen` state
+  is true, it sets the body's overflow style to "hidden" to prevent scrolling. When the state is
+  false, it resets the body's overflow style to its default value. The useEffect hook is triggered
+  whenever the `isPreferenceModalOpen` state changes. */
+  useEffect(() => {
+    if (isPreferenceModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isPreferenceModalOpen]);
+
 
   return (
     <AnimatePresence>
@@ -148,7 +178,6 @@ function Preference() {
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {/* Close Button */}
             <button
               className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
               onClick={handleClose}
@@ -160,20 +189,16 @@ function Preference() {
                 alt="Close"
               />
             </button>
-
-            {/* Modal Header */}
             <div className="mb-6">
               <h2 className="text-3xl text-white font-semibold">
                 Customize your topics
               </h2>
               <p className="text-lg text-white/80 mt-2">
-                Choose and manage up to 12 topics for your homepage. They'll also appear under topics that you follow.
+                Choose and manage topics for your page.
               </p>
             </div>
 
-            {/* Modal Content */}
             <div className="flex md:flex-row flex-col border-t border-b border-white/20 overflow-auto sm:h-customh8 h-customh9 scrollbar-gray">
-              {/* Selection Section */}
               <div className="md:w-[60%] w-full border-r border-white/20 pr-4 py-4">
                 <div className="space-y-6 pr-2 overflow-y-auto h-customh7 scrollbar_gray">
                   {categories.map((category) => (
@@ -190,13 +215,12 @@ function Preference() {
                           <button
                             key={topic}
                             onClick={() => toggleTopic(topic, category.type)}
-                            className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
-                              (category.type === "categories" 
-                                ? tempCategories.includes(topic)
-                                : tempSources.includes(topic))
-                                ? "bg-blue-600 text-white"
-                                : "bg-gray-600 text-gray-300 hover:bg-gray-500"
-                            }`}
+                            className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${(category.type === "categories"
+                              ? tempCategories.includes(topic)
+                              : tempSources.includes(topic))
+                              ? "bg-blue-600 text-white"
+                              : "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                              }`}
                           >
                             {topic}
                           </button>
@@ -214,7 +238,6 @@ function Preference() {
                     Selected Topics
                   </h3>
                   <div className="space-y-6">
-                    {/* Selected Categories */}
                     {tempCategories.length > 0 && (
                       <div>
                         <h4 className="text-sm font-medium text-white/80 mb-2">
