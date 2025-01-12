@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import NavBar from './components/NavBar';
 import ForYouPage from './pages/ForYouPage';
 import SearchResults from './pages/SearchResultPage';
+import NewShowCase from './pages/NewsShowCasePage';
 
 function App() {
   const [search, setSearch] = useState('');
@@ -44,6 +45,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/main-page" element={<MainPage />} />
             <Route path="/for-you" element={<ForYouPage />} />
+            <Route path="/news-showcase" element={<NewShowCase />} />
             <Route path="/india" element={<MainPage />} />
             <Route path="/world" element={<MainPage />} />
             <Route path="/local" element={<MainPage />} />

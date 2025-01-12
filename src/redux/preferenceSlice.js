@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const API_KEY = import.meta.env.VITE_APP_NEWSAPI_KEY;
+const NY_API_KEY = import.meta.env.VITE_APP_NEW_YORK_TIMES_KEY;
 
 // Helper function to extract error message
 const getErrorMessage = (error) => {
@@ -11,26 +12,34 @@ const getErrorMessage = (error) => {
   return "An unexpected error occurred";
 };
 
+
 export const fetchEverythingByCategory = createAsyncThunk(
   "preferences/fetchEverythingByCategory",
   async (categories, { rejectWithValue }) => {
     try {
-      const promises = categories.map(category =>
-        axios.get("https://newsapi.org/v2/everything", {
+      const promises = categories.map(category => {
+        // Lowercase the category and encode any spaces
+        const formattedCategory = encodeURIComponent(category.toLowerCase());
+
+        // Build the new API URL
+        const url = `https://api.nytimes.com/svc/topstories/v2/${formattedCategory}.json`;
+
+        return axios.get(url, {
           params: {
-            q: category,   
-            apiKey: API_KEY,
+            "api-key": NY_API_KEY, // Pass the API key
           },
-        })
-      );
-      
+        });
+      });
+
       const responses = await Promise.all(promises);
-      return responses.map(response => response.data);
+      console.log(responses, "responses");
+      return responses.map(response => response.data.results);
     } catch (error) {
       return rejectWithValue(getErrorMessage(error));
     }
   }
 );
+
 
 export const fetchTopHeadlinesBySource = createAsyncThunk(
   "preferences/fetchTopHeadlinesBySource",
@@ -88,7 +97,7 @@ const preferencesSlice = createSlice({
       })
       .addCase(fetchEverythingByCategory.fulfilled, (state, action) => {
         state.loading = false;
-        state.categoryResults = action.payload.flatMap(response => response.articles);
+        state.categoryResults = action.payload.flatMap(response => response);
       })
       .addCase(fetchEverythingByCategory.rejected, (state, action) => {
         state.loading = false;

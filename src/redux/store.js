@@ -5,6 +5,7 @@ import navBarReducer from './navbarSlice';
 import topHeadlinesReducer from './topHeadlinesSlice';
 import articlesReducer from './articleForAllPagesSlice';
 import preferencesReducer from "./preferenceSlice";
+import newsShowcaseReducer from './newsShowcaseSlice';
 
 
 
@@ -15,6 +16,7 @@ export const store = configureStore({
     topHeadlines: topHeadlinesReducer,
     articlesForAllPages: articlesReducer,
     preferences: preferencesReducer,
+    newsShowcase: newsShowcaseReducer,
 
   },
 });

@@ -22,11 +22,19 @@ export const MENU_ITEMS = [
 
 
 export const PREFERENCE_CATEGORY_ITEMS = [
-    "World",
-    "Local",
+    "Arts",
+    "Automobiles",
+    "Books/Review",
     "Business",
-    "Technology",
-    "Entertainment",
-    "Sports",
+    "Fashion",
+    "Food",
+    "Health",
+    "Magazine",
+    "Movies",
+    "Politics",
+    "Realestate",
     "Science",
+    "Sports",
+    "Theatre",
+    "Travel",
 ];

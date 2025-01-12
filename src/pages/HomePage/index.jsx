@@ -7,6 +7,7 @@ import Source from '../../components/SourceCarousel/Source';
 import LoadingShimmer from '../../components/LoadingIndicator';
 import EmptyScreen from '../../components/EmptyScreen';
 import PageHeader from '../MainPage/Components/PageHeader';
+import { formatDate } from '../../components/CommonMethods/dateFormat';
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const HomePage = () => {
         <div className="lg:w-[60%] w-full p-3 bg-[#5d687973] h-full overflow-auto scrollbar_gray rounded-xl">
           <p className="text-white pb-2 mb-4 border-b border-white text-2xl font-bold">Top Stories</p>
           <div>
-            {status === 'loading' &&   <LoadingShimmer count={4} />}
+            {status === 'loading' && <LoadingShimmer count={4} />}
             {status === 'failed' && <EmptyScreen message={error} />}
             {status === 'succeeded' && headlines.length === 0 && <EmptyScreen message="No headlines found." />}
             {status === 'succeeded' &&
@@ -61,10 +62,8 @@ const HomePage = () => {
                           <h3 className="font-semibold text-xl hover:underline cursor-pointer">{headline.title}</h3>
                         </a>
                         <p className='text-sm font-normal text-white mt-0.5'>{headline.description}</p>
-                        <p className='mt-2 text-[#3B82F6] font-normal text-sm'>
-                          Published at - {new Date(headline?.publishedAt).toLocaleString('en-US', {
-                            weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true
-                          })}
+                        <p className="mt-2 text-[#3B82F6] font-normal text-sm">
+                          Published at - {formatDate(headline?.publishedAt)}
                         </p>
                       </div>
                     </div>

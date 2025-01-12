@@ -24,21 +24,19 @@ function NavBar() {
     // Handle menu item click
     const handleMenuItemClick = (item) => {
         dispatch(handleMenuClick(item));
-
-        if (item !== 'For you' && item !== 'New Showcase') {
-            dispatch(fetchArticles(item.toLowerCase()));
-        }
-
+    
         if (item === 'Home') {
             navigate('/');
         } else if (item === 'For you') {
             navigate('/for-you');
         } else if (item === 'New Showcase') {
-            navigate('/new-showcase');
+            navigate('/news-showcase');
         } else {
-            navigate(`/${item.toLowerCase().replace(' ', '')}`);
+            navigate(`/${item.toLowerCase().replace(' ', '-')}`);
         }
     };
+
+    
 
     // Handle preference modal open
     const handlePreferenceModalOpen = () => {
@@ -93,10 +91,12 @@ function NavBar() {
             MENU_ITEMS.find((item) => {
                 if (path === '/' && item === 'Home') return true;
                 if (path === '/for-you' && item === 'For you') return true;
-                return path.includes(item.toLowerCase());
+                if (path === '/news-showcase' && item === 'New Showcase') return true;
+                return path.includes(item.toLowerCase().replace(' ', '-'));
             }) || 'Home';
         dispatch(handleMenuClick(activeItem));
     }, [location, dispatch]);
+    
 
     return (
         <div className="sticky top-0 mx-auto p-6 shadow-lg bg-gray-800 w-full">
