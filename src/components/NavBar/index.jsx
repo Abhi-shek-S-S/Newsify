@@ -1,4 +1,3 @@
-import { Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { MENU_ITEMS } from '../../constants/constant';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,13 +5,16 @@ import {
     clearSearchResults,
     handleMenuClick,
     searchArticles,
+    setFromDate,
     setIsPreferenceModalOpen,
     setSearch,
+    setToDate,
 } from '../../redux/navbarSlice';
 import Preference from '../PreferenceModal/Preference';
 import { useLocation, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { fetchSources } from '../../redux/sourcesSlice';
+import EnhancedSearchBar from '../SearchBar';
 
 function NavBar() {
     const dispatch = useDispatch();
@@ -45,30 +47,40 @@ function NavBar() {
     };
 
     // Handle search change with URL updates
-    const handleSearchChange = (value) => {
-        dispatch(setSearch(value));
+    const handleSearch = ({ searchTerm, fromDate, toDate }) => {
+        if (searchTerm.trim()) {
+            const params = new URLSearchParams();
+            params.set('q', searchTerm);
+            if (fromDate) params.set('from', fromDate);
+            if (toDate) params.set('to', toDate);
 
-        if (value.trim()) {
-            // Update URL with search query and navigate to search page
-            navigate(`/search?q=${encodeURIComponent(value.trim())}`);
-        } else {
-            // Clear search and redirect to home
-            navigate('/');
-            dispatch(clearSearchResults());
+            navigate(`/search?${params.toString()}`);
+            dispatch(searchArticles({ searchTerm, fromDate, toDate }));
         }
     };
+
+    const handleClear = () => {
+        dispatch(clearSearchResults());
+        navigate('/');
+      };
 
     // Handle initial load and URL search parameter
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const queryParam = params.get('q');
+        const fromDate = params.get('from');
+        const toDate = params.get('to');
 
-        // If there's a search query in the URL
         if (queryParam) {
             dispatch(setSearch(queryParam));
-            dispatch(searchArticles(queryParam));
+            if (fromDate) dispatch(setFromDate(fromDate));
+            if (toDate) dispatch(setToDate(toDate));
+            dispatch(searchArticles({
+                searchTerm: queryParam,
+                fromDate,
+                toDate
+            }));
         } else if (location.pathname === '/search' && !queryParam) {
-            // If we're on search page but no query parameter, go home
             navigate('/');
         }
     }, [location.pathname, dispatch, navigate]);
@@ -109,13 +121,15 @@ function NavBar() {
                 <div className="flex items-center xl:justify-end justify-between xl:w-[75%] w-full">
                     <div className="md:w-[60%] w-full md:mb-0 my-3">
                         <div className="flex w-full p-[13px] items-center justify-end gap-2 flex-1 dark:bg-gray-700 dark:border-gray-600 border rounded-md">
-                            <Search className="w-5 h-5 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="Search articles, locations and sources..."
+                            <EnhancedSearchBar
                                 value={search}
-                                onChange={(e) => handleSearchChange(e.target.value)}
-                                className="w-full focus:outline-none dark:bg-gray-700 text-white"
+                                onChange={(value) => dispatch(setSearch(value))}
+                                onSearch={handleSearch}
+                                onClear={handleClear}
+                                initialDates={{
+                                    fromDate: location.search ? new URLSearchParams(location.search).get('from') : '',
+                                    toDate: location.search ? new URLSearchParams(location.search).get('to') : ''
+                                }}
                             />
                         </div>
                     </div>

@@ -1,21 +1,29 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Create async thunk for search
 export const searchArticles = createAsyncThunk(
   'navBar/searchArticles',
-  async (searchTerm) => {
+  async ({ searchTerm, fromDate, toDate }) => {
     if (!searchTerm.trim()) return [];
     
     try {
       const API_KEY = import.meta.env.VITE_APP_NEWSAPI_KEY;
-      const response = await fetch(
-        `https://newsapi.org/v2/everything?q=${encodeURIComponent(searchTerm)}&apiKey=${API_KEY}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${API_KEY}`,
-          }
+      let url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(searchTerm)}`;
+      
+      // Add date parameters if they exist
+      if (fromDate) {
+        url += `&from=${fromDate}`;
+      }
+      if (toDate) {
+        url += `&to=${toDate}`;
+      }
+      
+      url += `&apiKey=${API_KEY}`;
+
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
         }
-      );
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -23,7 +31,7 @@ export const searchArticles = createAsyncThunk(
       }
 
       const data = await response.json();
-      return data.articles; // Return just the articles array from the response
+      return data.articles;
     } catch (error) {
       throw new Error(error.message || 'Failed to fetch articles');
     }
@@ -32,6 +40,8 @@ export const searchArticles = createAsyncThunk(
 
 const initialState = {
   search: '',
+  fromDate: '',
+  toDate: '',
   isPreferenceModalOpen: false,
   isFilterModalOpen: false,
   searchResults: [],
@@ -47,6 +57,12 @@ const navBarSlice = createSlice({
     setSearch: (state, action) => {
       state.search = action.payload;
     },
+    setFromDate: (state, action) => {
+      state.fromDate = action.payload;
+    },
+    setToDate: (state, action) => {
+      state.toDate = action.payload;
+    },
     setIsPreferenceModalOpen: (state, action) => {
       state.isPreferenceModalOpen = action.payload;
     },
@@ -59,6 +75,8 @@ const navBarSlice = createSlice({
     clearSearchResults: (state) => {
       state.searchResults = [];
       state.search = '';
+      state.fromDate = '';
+      state.toDate = '';
     }
   },
   extraReducers: (builder) => {
@@ -80,6 +98,8 @@ const navBarSlice = createSlice({
 
 export const {
   setSearch,
+  setFromDate,
+  setToDate,
   setIsPreferenceModalOpen,
   setIsFilterModalOpen,
   handleMenuClick,

@@ -1,34 +1,32 @@
 // HomePage.js
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTopHeadlines, fetchLocalNews } from '../../redux/topHeadlinesSlice';
+import { fetchTopHeadlines, fetchLocalNews, fetchTrendingNews } from '../../redux/topHeadlinesSlice';
 import { fetchSources } from '../../redux/sourcesSlice';
 import Source from '../../components/SourceCarousel/Source';
 import LoadingShimmer from '../../components/LoadingIndicator';
 import EmptyScreen from '../../components/EmptyScreen';
-import PageHeader from '../MainPage/Components/PageHeader';
 import { formatDate } from '../../components/CommonMethods/dateFormat';
+import PageHeader from '../../components/PageHeader/PageHeader';
+import { today } from '../../components/CommonMethods/today';
+import TrendingNewsSection from '../../components/TrendingNewSection';
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const { headlines, localNews, status, error } = useSelector((state) => state.topHeadlines);
+  const { trendingNews } = useSelector((state) => state.topHeadlines); // Add this line
   const { list: sources, isLoading, error: sourcesError } = useSelector((state) => state.sources);
 
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchTopHeadlines());
-      dispatch(fetchLocalNews('us'));
+      dispatch(fetchLocalNews('latest'));
+      dispatch(fetchTrendingNews());
       dispatch(fetchSources());
     }
   }, [status, dispatch]);
 
-  const today = new Date().toLocaleDateString('en-US',
-    {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
+
 
   return (
     <div className='bg-gray-900'>
@@ -73,40 +71,7 @@ const HomePage = () => {
         </div>
         {/* Local News Section */}
         <div className="lg:max-w-[40%] w-full text-white lg:pl-3 pl-0 lg:mt-0 mt-3">
-          <div className="w-full p-3 bg-[#5d687973] mb-3 max-h-[60%] overflow-auto scrollbar_gray rounded-xl">
-            <p className="text-white pb-2 mb-4 border-b border-white text-2xl font-bold">Local News</p>
-            {status === 'loading' && <LoadingShimmer />}
-            {status === 'failed' && <EmptyScreen message={error} />}
-            {status === 'succeeded' && localNews.length === 0 && <EmptyScreen message="No local news found." />}
-            {status === 'succeeded' &&
-              localNews
-                .filter((news) => news.content !== "[Removed]")
-                .map((news, index) => (
-                  <div key={index} className="mb-4">
-                    <div className="flex space-x-4">
-                      {news.urlToImage && (
-                        <img
-                          src={news.urlToImage}
-                          alt={news.title}
-                          className="w-[70px] h-[70px] object-cover rounded"
-                        />
-                      )}
-                      <div className="text-white">
-                        <a href={news?.url} target="_blank" rel="noopener noreferrer">
-                          <h3 className="font-semibold text-base hover:underline cursor-pointer">{news.title}</h3>
-                        </a>
-                        {/* <p>{news.description}</p> */}
-                        <p className='mt-2 text-[#3B82F6] font-normal text-sm'>
-                          Published at - {new Date(news?.publishedAt).toLocaleString('en-US', {
-                            weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true
-                          })}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-          </div>
-          <div className="w-full p-3 bg-[#5d687973] mb-3 max-h-[40%] overflow-auto scrollbar_gray rounded-xl">
+          {/* <div className="w-full p-3 bg-[#5d687973] mb-3 max-h-[40%] overflow-auto scrollbar_gray rounded-xl">
             <p className="text-white pb-2 mb-4 border-b border-white text-2xl font-bold">Trending Now</p>
             {status === 'loading' && <LoadingShimmer />}
             {status === 'failed' && <EmptyScreen message={error} />}
@@ -129,6 +94,44 @@ const HomePage = () => {
                         <a href={news?.url} target="_blank" rel="noopener noreferrer">
                           <h3 className="font-semibold text-xl hover:underline cursor-pointer">{news.title}</h3>
                         </a>
+                        <p className='mt-2 text-[#3B82F6] font-normal text-sm'>
+                          Published at - {new Date(news?.publishedAt).toLocaleString('en-US', {
+                            weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+          </div> */}
+          <TrendingNewsSection
+            status={status}
+            error={error}
+            trendingNews={trendingNews}
+          />
+          <div className="w-full p-3 bg-[#5d687973] mb-3 max-h-[60%] overflow-auto scrollbar_gray rounded-xl">
+            <p className="text-white pb-2 mb-4 border-b border-white text-2xl font-bold">Latest News</p>
+            {status === 'loading' && <LoadingShimmer />}
+            {status === 'failed' && <EmptyScreen message={error} />}
+            {status === 'succeeded' && localNews.length === 0 && <EmptyScreen message="No local news found." />}
+            {status === 'succeeded' &&
+              localNews
+                .filter((news) => news.content !== "[Removed]")
+                .map((news, index) => (
+                  <div key={index} className="mb-4">
+                    <div className="flex space-x-4">
+                      {news.urlToImage && (
+                        <img
+                          src={news.urlToImage}
+                          alt={news.title}
+                          className="w-[70px] h-[70px] object-cover rounded"
+                        />
+                      )}
+                      <div className="text-white">
+                        <a href={news?.url} target="_blank" rel="noopener noreferrer">
+                          <h3 className="font-semibold text-base hover:underline cursor-pointer">{news.title}</h3>
+                        </a>
+                        {/* <p>{news.description}</p> */}
                         <p className='mt-2 text-[#3B82F6] font-normal text-sm'>
                           Published at - {new Date(news?.publishedAt).toLocaleString('en-US', {
                             weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true
