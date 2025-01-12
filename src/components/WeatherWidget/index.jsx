@@ -53,7 +53,7 @@ const WeatherWidget = () => {
     }, []);
 
     if (loading) return <div className='text-white'>Loading weather...</div>;
-    if (error) return <div>{error}</div>;
+    if (error) return <div className='text-red-600'>{error}</div>;
 
     return (
         <div className="bg-gray-900 text-white p-4 rounded-lg flex items-center space-x-4">

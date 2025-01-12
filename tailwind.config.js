@@ -23,6 +23,9 @@ export default {
         customh9: "calc(100vh - 330px)",
         customh10: "calc(100vh - 200px)",
         customh11: "calc(100vh - 300px)",
+        customh12: "calc(100vh - 278px)",
+        customh13: "calc(100vh - 285px)",
+
       }
     },
   },

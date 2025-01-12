@@ -14,7 +14,7 @@ const SearchResults = () => {
 
   if (error) {
     return (
-      <EmptyScreen message={`Failed to fetch articles: ${error}`} height={'calc(100vh - 211px)'} />
+      <EmptyScreen message={`Failed to fetch articles: ${error}`} height={'h-customh12'} />
     );
   }
 
@@ -27,7 +27,9 @@ const SearchResults = () => {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {searchResults.map((result) => (
             <div key={result.id} className="border rounded-lg p-4 shadow-sm">
-              <h2 className="text-lg font-normal mb-2 text-white underline">{result.title}</h2>
+              <a href={result?.url} target="_blank" rel="noopener noreferrer">
+              <h2 className="text-lg font-normal mb-2 text-white underline cursor-pointer">{result.title}</h2>
+              </a>
               <p className="text-gray-400">{result.description}</p>
             </div>
           ))}

@@ -75,7 +75,7 @@ const EnhancedSearchBar = ({ onSearch, value, onChange, onClear, initialDates = 
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
-      <div className="flex w-full p-3 items-center gap-2 dark:bg-gray-700 dark:border-gray-600 border rounded-md">
+      <div className="flex w-full p-2.5 items-center gap-2 dark:bg-gray-700 dark:border-gray-600 border rounded-md">
         <input
           type="text"
           placeholder="Search articles, locations and sources..."

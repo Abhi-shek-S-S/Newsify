@@ -53,7 +53,7 @@ const ForYouPage = () => {
   const renderContent = () => {
     if (!hasSelections) {
       return (
-        <EmptyScreen message="No topics selected. Please choose topics to see relevant stories." />
+        <EmptyScreen message="No topics selected. Please choose topics to see relevant stories." height={'h-customh13'} />
       );
     }
 
