@@ -29,6 +29,7 @@ function NavBar() {
      */
     const handleMenuItemClick = (item) => {
         if (setMenuOpen) setMenuOpen(false);
+        dispatch(clearSearchResults());
         dispatch(handleMenuClick(item));
 
         if (item === 'Home') {
@@ -115,6 +116,12 @@ function NavBar() {
     searches for the corresponding menu item in the `MENU_ITEMS` array based on the path. */
     useEffect(() => {
         const path = location.pathname;
+        // Don't set active menu item if we're on the search route
+        if (path === '/search') {
+            dispatch(handleMenuClick(''));  // Clear active state
+            return;
+        }
+
         const activeItem =
             MENU_ITEMS.find((item) => {
                 if (path === '/' && item === 'Home') return true;
@@ -169,7 +176,7 @@ function NavBar() {
                             onClick={() => handleMenuItemClick(item)}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className={`text-base font-normal cursor-pointer transition duration-300 ease-in-out ${active === item ? 'border-b-4 rounded border-blue-500 text-blue-500' : 'text-white border-transparent'}`}
+                            className={`text-base font-normal cursor-pointer transition duration-300 ease-in-out ${active === item  && active !== '' ? 'border-b-4 rounded border-blue-500 text-blue-500' : 'text-white border-transparent'}`}
                         >
                             {item}
                         </motion.li>
@@ -192,7 +199,7 @@ function NavBar() {
                                     onClick={() => handleMenuItemClick(item)}
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className={`text-base font-normal cursor-pointer transition duration-300 ease-in-out ${active === item
+                                    className={`text-base font-normal cursor-pointer transition duration-300 ease-in-out ${active === item  && active !== '' 
                                         ? "border-b-4 w-[80%] rounded border-blue-500 text-blue-500"
                                         : "text-white border-transparent"
                                         }`}

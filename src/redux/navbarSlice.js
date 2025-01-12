@@ -1,9 +1,31 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+const initialState = {
+  search: '',
+  fromDate: '',
+  toDate: '',
+  isPreferenceModalOpen: false,
+  isFilterModalOpen: false,
+  searchResults: [],
+  isLoading: false,
+  error: null,
+  active: 'Home'
+};
+
+const loadInitialState = () => {
+  try {
+    const savedState = localStorage.getItem('searchState');
+    return savedState ? JSON.parse(savedState) : initialState;
+  } catch (error) {
+    console.error('Error loading state from localStorage:', error);
+    return initialState;
+  }
+};
+
 export const searchArticles = createAsyncThunk(
   'navBar/searchArticles',
-  async ({ searchTerm, fromDate, toDate }) => {
-    if (!searchTerm.trim()) return [];
+  async ({ searchTerm, fromDate, toDate }, { rejectWithValue }) => {
+    if (!searchTerm?.trim()) return [];
     
     try {
       const API_KEY = import.meta.env.VITE_APP_NEWSAPI_KEY;
@@ -25,41 +47,32 @@ export const searchArticles = createAsyncThunk(
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to fetch articles');
+        return rejectWithValue(errorData.message || 'Failed to fetch articles');
       }
 
       const data = await response.json();
       return data.articles;
     } catch (error) {
-      throw new Error(error.message || 'Failed to fetch articles');
+      return rejectWithValue(error.message || 'Failed to fetch articles');
     }
   }
 );
 
-const initialState = {
-  search: '',
-  fromDate: '',
-  toDate: '',
-  isPreferenceModalOpen: false,
-  isFilterModalOpen: false,
-  searchResults: [],
-  isLoading: false,
-  error: null,
-  active: 'Home'
-};
-
 const navBarSlice = createSlice({
   name: 'navBar',
-  initialState,
+  initialState: loadInitialState(),
   reducers: {
     setSearch: (state, action) => {
       state.search = action.payload;
+      localStorage.setItem('searchState', JSON.stringify(state));
     },
     setFromDate: (state, action) => {
       state.fromDate = action.payload;
+      localStorage.setItem('searchState', JSON.stringify(state));
     },
     setToDate: (state, action) => {
       state.toDate = action.payload;
+      localStorage.setItem('searchState', JSON.stringify(state));
     },
     setIsPreferenceModalOpen: (state, action) => {
       state.isPreferenceModalOpen = action.payload;
@@ -75,6 +88,7 @@ const navBarSlice = createSlice({
       state.search = '';
       state.fromDate = '';
       state.toDate = '';
+      localStorage.removeItem('searchState');
     }
   },
   extraReducers: (builder) => {
@@ -82,14 +96,17 @@ const navBarSlice = createSlice({
       .addCase(searchArticles.pending, (state) => {
         state.isLoading = true;
         state.error = null;
+        localStorage.setItem('searchState', JSON.stringify(state));
       })
       .addCase(searchArticles.fulfilled, (state, action) => {
         state.isLoading = false;
         state.searchResults = action.payload;
+        localStorage.setItem('searchState', JSON.stringify(state));
       })
       .addCase(searchArticles.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
+        localStorage.setItem('searchState', JSON.stringify(state));
       });
   }
 });
