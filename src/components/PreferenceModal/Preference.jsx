@@ -120,6 +120,7 @@ function Preference() {
     setTempSources([]);
     dispatch(resetSelections());
     dispatch(setIsPreferenceModalOpen(false));
+    navigate("/for-you");
   };
 
   const handleClose = () => {

@@ -12,7 +12,7 @@ import {
 import Preference from '../PreferenceModal/Preference';
 import { useLocation, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
-import { fetchArticles } from '../../redux/articleForAllPagesSlice';
+import { fetchSources } from '../../redux/sourcesSlice';
 
 function NavBar() {
     const dispatch = useDispatch();
@@ -24,7 +24,7 @@ function NavBar() {
     // Handle menu item click
     const handleMenuItemClick = (item) => {
         dispatch(handleMenuClick(item));
-    
+
         if (item === 'Home') {
             navigate('/');
         } else if (item === 'For you') {
@@ -36,10 +36,11 @@ function NavBar() {
         }
     };
 
-    
+
 
     // Handle preference modal open
     const handlePreferenceModalOpen = () => {
+        dispatch(fetchSources());
         dispatch(setIsPreferenceModalOpen(true));
     };
 
@@ -96,7 +97,7 @@ function NavBar() {
             }) || 'Home';
         dispatch(handleMenuClick(activeItem));
     }, [location, dispatch]);
-    
+
 
     return (
         <div className="sticky top-0 mx-auto p-6 shadow-lg bg-gray-800 w-full">
@@ -119,15 +120,15 @@ function NavBar() {
                         </div>
                     </div>
                     <div className="md:w-[25%] w-full  items-center justify-end lg:block flex">
-                    <button
-                        type="button"
-                        onClick={handlePreferenceModalOpen}
-                        className="ml-3 px-6 py-1 mt-3 rounded-lg flex items-center justify-between text-white text-lg font-normal border-white border"
-                    >
-                        Preference
-                        <img src="/Images/filter.png" alt="Preference" className="p-2 rounded-full w-10 h-10 ml-2" />
-                    </button>
-                </div>
+                        <button
+                            type="button"
+                            onClick={handlePreferenceModalOpen}
+                            className="ml-3 px-6 py-1 mt-3 rounded-lg flex items-center justify-between text-white text-lg font-normal border-white border"
+                        >
+                            Preferences
+                            <img src="/Images/filter.png" alt="Preference" className="p-2 rounded-full w-10 h-10 ml-2" />
+                        </button>
+                    </div>
                 </div>
 
             </div>
@@ -154,7 +155,7 @@ function NavBar() {
                         onClick={handlePreferenceModalOpen}
                         className="lg:ml-3 ml-0 px-3 py-1 rounded-lg flex items-center justify-between text-white text-lg font-normal border-white border"
                     >
-                        Preference
+                        Preferences
                         <img src="/Images/filter.png" alt="Preference" className="p-2 rounded-full w-10 h-10 ml-2" />
                     </button>
                 </div>
