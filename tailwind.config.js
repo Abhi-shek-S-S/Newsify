@@ -21,6 +21,8 @@ export default {
         customh7: "calc(100vh - 345px)",
         customh8: "calc(100vh - 310px)",
         customh9: "calc(100vh - 330px)",
+        customh10: "calc(100vh - 200px)",
+
 
 
 

@@ -102,7 +102,7 @@ function NavBar() {
         <div className="sticky top-0 mx-auto p-6 shadow-lg bg-gray-800 w-full">
             <div className="w-full flex xl:flex-row flex-col xl:items-center xl:justify-between">
                 <div className="w-[25%] flex items-center">
-                    <img src="/public/Images/logo .webp" className="w-20 h-20 mr-4" alt="logo" />
+                    <img src="/Images/logo .webp" className="w-20 h-20 mr-4" alt="logo" />
                     <p className="text-white font-extrabold text-[37px] break-words flex flex-col">Newsify</p>
                 </div>
                 <div className="flex items-center xl:justify-end justify-between xl:w-[75%] w-full">

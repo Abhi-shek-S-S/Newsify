@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import EmptyScreen from '../../components/EmptyScreen';
 
 const SearchResults = () => {
   const { searchResults, isLoading, error, search } = useSelector(state => state.navBar);
@@ -13,15 +14,13 @@ const SearchResults = () => {
 
   if (error) {
     return (
-      <div className="text-center p-8">
-        <h2 className="text-red-500 text-xl">Error: {error}</h2>
-      </div>
+      <EmptyScreen message={`Failed to fetch articles: ${error}`} />
     );
   }
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Search Results for "{search}"</h1>
+      <h1 className="text-2xl font-bold mb-6">Search Results for &quot;{search}&quot;</h1>
       {searchResults.length === 0 ? (
         <p className="text-gray-600">No results found</p>
       ) : (

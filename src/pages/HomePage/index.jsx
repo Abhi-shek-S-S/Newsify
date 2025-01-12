@@ -37,7 +37,7 @@ const HomePage = () => {
         <div className="lg:w-[60%] w-full p-3 bg-[#5d687973] h-full overflow-auto scrollbar_gray rounded-xl">
           <p className="text-white pb-2 mb-4 border-b border-white text-2xl font-bold">Top Stories</p>
           <div>
-            {status === 'loading' && <LoadingShimmer />}
+            {status === 'loading' &&   <LoadingShimmer count={4} />}
             {status === 'failed' && <EmptyScreen message={error} />}
             {status === 'succeeded' && headlines.length === 0 && <EmptyScreen message="No headlines found." />}
             {status === 'succeeded' &&
@@ -146,7 +146,7 @@ const HomePage = () => {
       <div className="w-full h-[40%] p-3 rounded">
         {isLoading && <LoadingShimmer />}
         {sourcesError && <EmptyScreen message={sourcesError} />}
-        {sources && sources.length === 0 && <EmptyScreen message="No sources available." />}
+        {(sources && sources.length === 0 && !sourcesError) && <EmptyScreen message="No sources available." />}
         {sources && <Source sources={sources} />}
       </div>
     </div>

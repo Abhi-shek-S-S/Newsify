@@ -3,11 +3,18 @@ import axios from "axios";
 
 const API_KEY = import.meta.env.VITE_APP_NEWSAPI_KEY;
 
+// Helper function to extract error message
+const getErrorMessage = (error) => {
+  if (typeof error === 'string') return error;
+  if (error?.response?.data?.message) return error.response.data.message;
+  if (error?.message) return error.message;
+  return "An unexpected error occurred";
+};
+
 export const fetchEverythingByCategory = createAsyncThunk(
   "preferences/fetchEverythingByCategory",
   async (categories, { rejectWithValue }) => {
     try {
-      // Handle multiple categories
       const promises = categories.map(category =>
         axios.get("https://newsapi.org/v2/everything", {
           params: {
@@ -20,7 +27,7 @@ export const fetchEverythingByCategory = createAsyncThunk(
       const responses = await Promise.all(promises);
       return responses.map(response => response.data);
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(getErrorMessage(error));
     }
   }
 );
@@ -42,7 +49,7 @@ export const fetchTopHeadlinesBySource = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(getErrorMessage(error));
     }
   }
 );
